@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Crie fundos, temas e projetos .pbip personalizados para relatórios do Power BI.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Italo Junio">
+<meta property="og:title" content="Gerador de Layout para Power BI">
+<meta property="og:description" content="Crie fundos, temas e projetos .pbip personalizados para relatórios do Power BI.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#ffe600">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<title>Layout BI</title>
+<link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./experience.css">
+</head>
+<body>
+<a class="skip-link" href="#workspace">Pular para o editor</a>
+
+<header class="gbar">
+  <div class="gin">
+    <div class="gbrand">
+      <svg viewBox="0 0 34 24" aria-hidden="true"><rect x=".5" y=".5" width="33" height="23" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="1" y="1" width="8" height="22" rx="2" fill="#0071e3"/><rect x="12" y="4" width="19" height="16" rx="2" fill="none" stroke="currentColor" stroke-dasharray="2 2" opacity=".6"/></svg>
+      Gerador de Layout
+    </div>
+    <nav class="glinks" aria-label="Navegação do site"><a href="#about">Sobre</a></nav>
+    <div class="gact">
+      <button type="button" class="btn search-trigger" id="searchOpen" aria-haspopup="dialog" aria-label="Buscar ajustes (Control ou Command K)"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><span>Buscar ajustes</span><kbd>Ctrl K</kbd></button>
+      <button type="button" class="btn ghost" id="guideBtn">Guia</button>
+      <button type="button" class="btn" id="clearBtn">Limpar edições</button>
+     <button type="button" class="btn primary" data-pix-open>Apoie</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <p class="eyebrow">Power BI · Layouts</p>
+  <h1>Seu relatório começa<br>com uma <em>boa base.</em></h1>
+  <p class="lede">Ajuste o layout, acompanhe a prévia e leve tudo para o Power BI.</p>
+</section>
+
+<div class="wrap" id="workspace" tabindex="-1">
+  <aside class="side" aria-label="Painel de personalização">
+<div class="side-tools">
+  <button type="button" class="linkbtn" id="expandAll">Expandir tudo</button>
+  <span aria-hidden="true">·</span>
+  <button type="button" class="linkbtn" id="collapseAll">Recolher tudo</button>
+</div>
+    <details class="sec" id="s-look" open>
+      <summary>Cores e modo</summary>
+      <div class="sec-b">
+        <div class="ctl"><span class="lab">Modo</span>
+          <div class="seg" id="modeSeg" data-key="mode"><button type="button" data-val="light">Claro</button><button type="button" data-val="dark">Escuro</button></div></div>
+        <div class="ctl"><span class="lab">Agrupar paletas</span>
+          <div class="seg" id="palGroup" data-key="group"><button type="button" data-val="industry">Setor</button><button type="button" data-val="mood">Sensação</button><button type="button" data-val="tone">Tom</button></div></div>
+        <div class="pals" id="pals"></div>
+        <div class="accentrow">
+          <input type="text" id="accent" aria-label="Cor de destaque em hexadecimal" placeholder="#1F6FC4" maxlength="7" spellcheck="false">
+          <span>Destaque <code id="accentHex">paleta</code></span>
+          <button type="button" class="linkbtn" id="accentReset" hidden>Usar paleta</button>
+        </div>
+        <button type="button" class="btn wide" id="imgPalBtn">Criar paleta a partir de uma imagem…</button>
+        <div class="swatches" id="imgSwatches" role="group" aria-label="Cores extraídas da imagem"></div>
+        <input type="file" id="imgPalFile" accept="image/*" hidden>
+      </div>
+    </details>
+
+    <details class="sec" id="s-size">
+      <summary>Tamanho da página</summary>
+      <div class="sec-b">
+        <select id="size" aria-label="Tamanho da página">
+          <option value="1920x1080">1920 × 1080 · 16:9 (padrão)</option>
+          <option value="1920x1280">1920 × 1280 · 3:2</option>
+          <option value="1280x720">1280 × 720 · 16:9</option>
+          <option value="960x720">960 × 720 · 4:3</option>
+          <option value="custom">Personalizado</option>
+        </select>
+        <div class="two" id="customSizeFields" hidden>
+          <label>Largura (px)<input type="number" id="customWidth" min="1" max="16384" step="1"></label>
+          <label>Altura (px)<input type="number" id="customHeight" min="1" max="16384" step="1"></label>
+        </div>
+      </div>
+    </details>
+
+    <details class="sec" id="s-nav">
+      <summary>Navegação e painel</summary>
+      <div class="sec-b">
+        <div class="seg frames" id="navFrames" data-key="nav"></div>
+        <div class="ctl"><span class="lab">Tom da navegação</span>
+          <div class="seg" id="navTone" data-key="sidebar"><button type="button" data-val="brand">Marca</button><button type="button" data-val="accent">Cor</button><button type="button" data-val="tint">Suave</button><button type="button" data-val="paper">Papel</button></div></div>
+        <div class="ctl"><span class="lab">Cor do texto</span>
+          <div class="seg" data-key="navInk"><button type="button" data-val="auto">Automática</button><button type="button" data-val="accent">Destaque</button><button type="button" data-val="mono">Monocromática</button></div></div>
+        <div class="ctl"><span class="lab">Preenchimento</span>
+          <div class="seg" data-key="navFill"><button type="button" data-val="solid">Sólido</button><button type="button" data-val="gradient">Gradiente</button></div></div>
+        <div class="ctl"><span class="lab">Item ativo</span>
+          <div class="seg" data-key="activeStyle"><button type="button" data-val="fill">Preenchido</button><button type="button" data-val="bar">Barra de borda</button></div></div>
+        <div class="ctl"><span class="lab">Posição das páginas</span>
+          <div class="seg" data-key="navAlign"><button type="button" data-val="top">Topo</button><button type="button" data-val="middle">Meio</button><button type="button" data-val="bottom">Base</button></div></div>
+        <div class="ctl"><span class="lab">Cantos das abas</span>
+          <div class="seg" data-key="tabRadius"><button type="button" data-val="6">Pequeno</button><button type="button" data-val="12">Médio</button><button type="button" data-val="20">Grande</button><button type="button" data-val="32">Arredondado</button></div></div>
+        <div class="ctl"><span class="lab">Faixa do cabeçalho</span>
+          <div class="seg" data-key="band"><button type="button" data-val="false">Desativado</button><button type="button" data-val="true">Ativado</button></div></div>
+        <div class="ctl"><span class="lab">Campos de filtro</span>
+          <div class="seg" data-key="filterSlots"><button type="button" data-val="2">2</button><button type="button" data-val="3">3</button><button type="button" data-val="4">4</button><button type="button" data-val="5">5</button></div></div>
+
+        <div class="gh">Ajustes da navegação</div>
+        <div id="navSliders" class="sliders"></div>
+        <button type="button" class="linkbtn" id="navReset" style="align-self:flex-start">Voltar ao automático</button>
+
+        <div class="gh">Ajustes do painel</div>
+        <div id="panelSliders" class="sliders"></div>
+        <button type="button" class="linkbtn" id="panelReset" style="align-self:flex-start">Voltar ao automático</button>
+      </div>
+    </details>
+
+    <details class="sec" id="s-pages">
+      <summary>Páginas</summary>
+      <div class="sec-b">
+        <p class="hint">Digite o nome, clique no ícone para escolher e use os botões para ocultar, duplicar, ordenar ou remover. Páginas ocultas saem do menu e da exportação.</p>
+        <div class="plist" id="pageList"></div>
+        <button type="button" class="btn primary wide" id="newPage">+ Nova página</button>
+        <div class="gh">Estilo do menu inicial</div>
+        <div class="seg frames menus" id="menuFrames" data-key="menuStyle"></div>
+      </div>
+    </details>
+
+    <details class="sec" id="s-logo">
+      <summary>Logotipo</summary>
+      <div class="sec-b">
+        <label class="switch" id="logoShow"><span>Mostrar área do logotipo</span><input type="checkbox" id="showLogoCk"><i></i></label>
+        <div class="ctl"><span class="lab">Quando não houver imagem</span>
+          <div class="seg" data-key="logo"><button type="button" data-val="placeholder">Espaço reservado</button><button type="button" data-val="mark">Marca</button><button type="button" data-val="letter">Letra</button><button type="button" data-val="icon">Ícone</button></div></div>
+        <div class="row">
+          <span class="grow hint">Ícone da marca</span>
+          <button type="button" class="ibtn" id="logoIconBtn" data-pick-icon="logo" aria-label="Escolher ícone do logotipo"></button>
+        </div>
+        <div class="gh">Imagens do logotipo</div>
+        <div class="lthumbs" id="logoThumbs"></div>
+        <button type="button" class="btn wide" id="logoAdd">Adicionar imagens…</button>
+        <input type="file" id="logoFile" accept="image/png,image/jpeg,image/svg+xml,image/webp" multiple hidden>
+        <p class="hint">Você pode colocar várias imagens lado a lado na mesma área. Use ◀ ▶ para mudar a ordem. No projeto Power BI, cada imagem vira um visual separado.</p>
+        <div class="ctl"><span class="lab">Altura do logotipo</span><div id="logoSliders" class="sliders"></div></div>
+      </div>
+    </details>
+
+    <details class="sec" id="s-text">
+      <summary>Textos e fontes</summary>
+      <div class="sec-b">
+        <div class="ctl"><span class="lab">Rótulos</span>
+          <div class="seg" data-key="text"><button type="button" data-val="true">Textos</button><button type="button" data-val="false">Campos em branco</button></div></div>
+        <div class="ctl"><span class="lab">Cor dos rótulos</span>
+          <div class="seg" data-key="textInk"><button type="button" data-val="auto">Automática</button><button type="button" data-val="white">Branco</button><button type="button" data-val="palette">Paleta</button></div></div>
+        <div class="ctl" id="fontSizes"><span class="lab">Tamanhos (pontos, como no Power BI)</span>
+          <div class="sizes">
+            <label>Geral<input type="number" id="fontGeneral" min="8" max="40" step="1"></label>
+            <label>Título<input type="number" id="fontTitle" min="8" max="48" step="1"></label>
+            <label>Cartões<input type="number" id="fontCallout" min="10" max="72" step="1"></label>
+          </div>
+          <select id="fontFamilyGeneral" aria-label="Fonte geral"></select>
+          <select id="fontFamilyTitle" aria-label="Fonte de título"></select>
+          <select id="fontFamilyCallout" aria-label="Fonte de cartões"></select>
+        </div>
+        <div class="ctl" id="titleIn"><label class="lab" for="title">Título do relatório</label><input type="text" id="title" placeholder="Digite o título (opcional)"></div>
+        <div class="hint">Coloque uma palavra entre *asteriscos* para destacá-la nos títulos.</div>
+        <div class="ctl" id="brandIn"><label class="lab" for="brand">Empresa</label><input type="text" id="brand" placeholder="Digite o nome (opcional)"></div>
+        <div class="ctl" id="subIn"><label class="lab" for="subtitle">Subtítulo</label><input type="text" id="subtitle"></div>
+        <div class="ctl"><span class="lab">Rodapé</span>
+          <div class="seg" data-key="footerLinks"><button type="button" data-val="true">LinkedIn + site</button><button type="button" data-val="false">Texto</button></div></div>
+        <div class="ctl" id="footerTextRow"><label class="lab" for="footer">Texto do rodapé</label><input type="text" id="footer"></div>
+      </div>
+    </details>
+
+    <details class="sec" id="s-icons">
+      <summary>Ícones</summary>
+      <div class="sec-b">
+        <p class="hint">Cada página tem seu ícone na seção Páginas. Aqui você ajusta o estilo de todos.</p>
+        <div class="ctl"><span class="lab">Estilo</span>
+          <div class="seg" data-key="iconStyle"><button type="button" data-val="outline">Contorno</button><button type="button" data-val="duotone">Duas cores</button></div></div>
+        <div class="ctl"><span class="lab">Espessura</span>
+          <div class="seg" data-key="iconWeight"><button type="button" data-val="1.5">Fina</button><button type="button" data-val="2">Regular</button><button type="button" data-val="2.5">Negrito</button></div></div>
+        <div class="ctl"><span class="lab">Fundo do ícone</span>
+          <div class="seg" data-key="iconHolder"><button type="button" data-val="none">Nenhum</button><button type="button" data-val="square">Quadrado</button><button type="button" data-val="circle">Círculo</button></div></div>
+        <div class="ctl"><span class="lab">Ícones na navegação</span>
+          <div class="seg" data-key="showIcons"><button type="button" data-val="true">Mostrar</button><button type="button" data-val="false">Ocultar</button></div></div>
+        <button type="button" class="linkbtn" id="iconsAuto" style="align-self:flex-start">Restaurar ícones automáticos</button>
+      </div>
+    </details>
+
+    <details class="sec" id="s-cards">
+      <summary>Estilo dos cartões</summary>
+      <div class="sec-b">
+        <div class="ctl"><span class="lab">Estilo</span>
+          <div class="seg" data-key="cardStyle"><button type="button" data-val="plain">Simples</button><button type="button" data-val="band">Faixa de título</button><button type="button" data-val="tab">Traço</button></div></div>
+        <div class="ctl"><span class="lab">Cor</span>
+          <div class="seg" data-key="cardTone"><button type="button" data-val="paper">Papel</button><button type="button" data-val="tint">Suave</button><button type="button" data-val="color">Cor</button><button type="button" data-val="nav">Navegação</button></div></div>
+        <div class="ctl"><span class="lab">Cantos</span>
+          <div class="seg" data-key="radius"><button type="button" data-val="0">0</button><button type="button" data-val="4">4</button><button type="button" data-val="8">8</button><button type="button" data-val="14">14</button></div></div>
+        <div class="ctl"><span class="lab">Sombra</span>
+          <div class="seg" data-key="shadow"><button type="button" data-val="true">Ativada</button><button type="button" data-val="false">Desativada</button></div></div>
+        <div class="ctl"><span class="lab">Textura</span>
+          <div class="seg" data-key="texture"><button type="button" data-val="none">Nenhuma</button><button type="button" data-val="glow">Brilho</button><button type="button" data-val="dots">Pontos</button></div></div>
+      </div>
+    </details>
+
+    <details class="sec" id="s-photo">
+      <summary>Imagem do menu</summary>
+      <div class="sec-b">
+        <p class="hint">Usada nos menus História, Faixa, Painel com imagem e Capa.</p>
+        <div class="row">
+          <button type="button" class="btn grow" id="photoUpload">Enviar foto…</button>
+          <button type="button" class="btn" id="photoRemove" disabled>Remover</button>
+        </div>
+        <div class="row">
+          <input type="text" id="photoUrl" class="grow" placeholder="Cole o endereço de uma imagem" aria-label="Endereço da foto">
+          <button type="button" class="btn" id="photoFetch">Usar</button>
+        </div>
+        <p class="hint">Encontre fotos em <a href="https://unsplash.com/" target="_blank" rel="noopener">unsplash.com</a>. Baixe e envie, ou clique com o botão direito na imagem, copie o endereço e cole aqui.</p>
+        <div class="ctl"><label class="lab" for="photoCredit">Crédito</label><input type="text" id="photoCredit" placeholder="Foto por … no Unsplash"></div>
+        <div class="ctl"><span class="lab">Desfoque</span>
+          <div class="seg" data-key="photoBlur"><button type="button" data-val="0">Nenhum</button><button type="button" data-val="6">Suave</button><button type="button" data-val="14">Intenso</button></div></div>
+        <div class="ctl"><span class="lab">Escurecer</span>
+          <div class="seg" data-key="photoDim"><button type="button" data-val="0.3">Claro</button><button type="button" data-val="0.5">Médio</button><button type="button" data-val="0.7">Forte</button></div></div>
+        <div class="ctl"><span class="lab">Ajuste</span>
+          <div class="seg" data-key="photoFit"><button type="button" data-val="fill">Preencher</button><button type="button" data-val="fit">Ajustar</button></div></div>
+        <div class="ctl"><span class="lab">Lado da imagem</span>
+          <div class="seg" data-key="imgSide"><button type="button" data-val="left">Esquerda</button><button type="button" data-val="right">Direita</button></div></div>
+        <div class="ctl"><span class="lab">Aplicar em</span>
+          <div class="seg" data-key="photoPages"><button type="button" data-val="false">Menu inicial</button><button type="button" data-val="true">Todas as páginas</button></div></div>
+        <button type="button" class="linkbtn" id="photoPalette" style="align-self:flex-start">Combinar paleta com esta foto</button>
+        <input type="file" id="photoFile" accept="image/*" hidden>
+      </div>
+    </details>
+
+    <details class="sec" id="s-addon">
+      <summary>Complemento de tema</summary>
+      <div class="sec-b">
+        <div class="row">
+          <button type="button" class="btn grow" id="addonUpload">Adicionar configurações (.json)…</button>
+          <button type="button" class="btn" id="addonRemove" hidden>Remover</button>
+        </div>
+        <input type="file" id="addonFile" accept=".json,application/json" hidden>
+        <div class="hint" id="addonInfo" hidden></div>
+        <p class="hint">Mescla configurações extras, como uma licença ZoomCharts, no tema e no projeto Power BI. Fica salvo neste navegador.</p>
+      </div>
+    </details>
+  </aside>
+
+  <main class="main">
+    <details class="gallery" id="gallery">
+      <summary>Explorar molduras e paletas</summary>
+      <div class="galbody">
+        <div class="galhead">
+          <h2 style="font-size:20px" id="galTitle">Molduras</h2>
+          <div class="seg" data-key="view"><button type="button" data-val="frames">Molduras</button><button type="button" data-val="palettes">Paletas</button></div>
+        </div>
+        <div class="grid" id="grid"></div>
+      </div>
+    </details>
+
+   <div class="stage">
+  <div class="stageleft" id="stageLeft">
+    <div class="pv-bar">
+      <span class="pv-title">Prévia</span><span class="save-status" id="saveStatus" role="status" aria-live="polite" data-state="pending">Carregando edições…</span>
+      <span class="pv-info" id="pvInfo"></span>
+      <button type="button" class="btn sm" id="pvMax">Maximizar</button>
+      <button type="button" class="btn sm" id="pvMin" hidden>Minimizar</button>
+    </div>
+    <div class="pagetabs" id="pagetabs" role="group" aria-label="Página"></div>
+    <div class="board">
+      <div class="ruled" id="ruled">
+        <div class="rx" id="rx" aria-hidden="true"></div>
+        <div class="ry" id="ry" aria-hidden="true"></div>
+        <div id="previewWrap">
+          <div id="preview" role="img" aria-label="Prévia do fundo"></div>
+          <div id="overlay" tabindex="0" aria-label="Editor de cartões: arraste para desenhar; Delete remove o cartão selecionado; as setas movem; Shift com as setas redimensiona."></div>
+        </div>
+      </div>
+      <div class="boardfoot">
+        <label><input type="checkbox" id="labels"> Exibir rótulos nas áreas</label>
+        <span class="mono" id="sizeNote"></span>
+      </div>
+    </div>
+  </div>
+
+      <div class="stagecol">
+        <section class="card panel-box" id="cardTools">
+          <div class="sub-h"><h3>Cartões nesta página</h3><span class="mono" id="cardCount"></span></div>
+          <div class="seg kinds" data-key="kind" style="flex-wrap:wrap">
+            <button type="button" data-val="kpi">KPI</button><button type="button" data-val="chart">Gráfico</button><button type="button" data-val="table">Tabela</button><button type="button" data-val="slicer">Filtro</button><button type="button" data-val="map">Mapa</button><button type="button" data-val="text">Texto</button>
+          </div>
+          <div class="seg" data-key="snap"><button type="button" data-val="2">12 colunas</button><button type="button" data-val="1">24 colunas</button></div>
+          <select id="preset" aria-label="Começar com um modelo"></select>
+          <div class="row">
+            <button type="button" class="btn sm" id="delCard" disabled>Excluir cartão</button>
+            <button type="button" class="btn sm" id="clearPage">Limpar página</button>
+            <button type="button" class="btn sm" id="allPages">Copiar para todas</button>
+          </div>
+          <p class="hint">Arraste na tela para desenhar. Arraste um cartão para mover ou puxe o canto para redimensionar. A tecla <kbd>Delete</kbd> exclui o cartão; as setas movem; <kbd>Shift</kbd>+setas redimensionam.</p>
+        </section>
+
+        <section class="card panel-box" id="exportBox">
+          <h3>Exportar</h3>
+          <div class="exports">
+            <button type="button" class="btn primary" data-export="png1">Esta página <small id="px1"></small></button>
+            <button type="button" class="btn" data-export="png2">PNG @2x <small id="px2"></small></button>
+            <button type="button" class="btn" data-export="svg">SVG <small>vetor</small></button>
+            <button type="button" class="btn" data-export="json">Tema <small>.json</small></button>
+            <button type="button" class="btn wide" data-export="zip">Menu + todas as páginas <small id="zipNote"></small></button>
+          </div>
+        </section>
+
+        <section class="card panel-box" id="pbipBox">
+          <h3>Projeto Power BI</h3>
+          <div class="ctl"><span class="lab">Texto do projeto</span>
+            <div class="seg" data-key="pbipText"><button type="button" data-val="live">Caixas editáveis</button><button type="button" data-val="baked">Na imagem</button></div></div>
+          <div class="ctl"><span class="lab">Nomes das páginas</span>
+            <div class="seg" data-key="pageNames"><button type="button" data-val="auto">Do Power BI</button><button type="button" data-val="fixed">Ao navegar</button></div></div>
+          <button type="button" class="btn primary wide" data-export="pbip">Baixar projeto .pbip <small>zip</small></button>
+          <p class="hint">Extraia e abra o <code>.pbip</code> no Power BI Desktop. Se o Windows reclamar do caminho, extraia em um local curto, como <code>C:\PBI\</code>.</p>
+        </section>
+
+        <details class="card panel-box advanced-panel" id="zonesBox"><summary>Posições dos elementos</summary><div class="advanced-content">
+          <div class="sub-h"><h3>Posições</h3><button type="button" class="linkbtn" id="copyZones">Copiar tabela</button></div>
+          <div class="tablewrap"><table><thead><tr><th>Área</th><th>X</th><th>Y</th><th>W</th><th>H</th></tr></thead><tbody id="zones"></tbody></table></div>
+          <p class="hint">Posicione os botões de navegação sobre as linhas e os visuais sobre os cartões.</p>
+        </div></details>
+
+        <details class="card panel-box advanced-panel" id="palBox"><summary>Paleta em uso</summary><div class="advanced-content">
+          <h3 id="palName"></h3>
+          <p class="hint" id="palNote"></p>
+          <div class="chiprow"><span>Sequencial</span><div class="chips" id="seq"></div></div>
+          <div class="chiprow"><span>Divergente</span><div class="chips" id="div"></div></div>
+          <p class="hint">Clique em uma cor para copiar o código.</p>
+        </div></details>
+
+        <details class="card panel-box advanced-panel" id="slotsBox"><summary>Cores do tema Power BI</summary><div class="advanced-content">
+          <div class="sub-h"><h3>Cores do tema do Power BI</h3><button type="button" class="linkbtn" id="resetSlots">Restaurar</button></div>
+          <p class="hint">A cor 1 vai para a primeira série, a 2 para a segunda e assim por diante.</p>
+          <div id="slotPreview"></div>
+          <div id="slots" class="slot-list"></div>
+        </div></details>
+
+        <details class="card panel-box advanced-panel" id="clearBox"><summary>Edições salvas</summary><div class="advanced-content">
+          <h3>Edições salvas</h3>
+          <p class="hint">As edições são salvas neste navegador. Consulte o indicador de salvamento ao lado da prévia.</p>
+          <button type="button" class="btn danger wide" id="clearBtn2">Limpar edições</button>
+        </div></details>
+      </div>
+    </div>
+  </main>
+</div>
+
+<section class="about" id="about" aria-labelledby="about-title">
+  <div class="about-in">
+    <p class="about-eyebrow">Sobre a ferramenta</p>
+    <h2 id="about-title">Um ponto de partida gratuito para o seu Power BI.</h2>
+    <div class="about-grid">
+      <div>
+        <h3>Contexto</h3>
+        <p>Todo relatório precisa de uma base antes do primeiro gráfico: fundo, cores, navegação e botões em cada página. Isso leva horas e perde consistência conforme o relatório cresce. Este gerador prepara essa base em minutos.</p>
+      </div>
+      <div>
+        <h3>Recursos</h3>
+        <ul class="about-list">
+          <li>12 estruturas de navegação e 6 estilos de menu inicial</li>
+          <li>Páginas com nome, ícone, ocultar, duplicar, ordenar e remover</li>
+          <li>Várias imagens lado a lado na área do logotipo</li>
+          <li>27 paletas por setor e sensação, cor própria ou tirada de uma imagem</li>
+          <li>Exportação em PNG, SVG e projeto .pbip pronto para abrir</li>
+          <li>Edições salvas automaticamente neste navegador</li>
+        </ul>
+      </div>
+    </div>
+    <footer class="about-foot">
+      <span>Feito por Italo Junio</span>
+      <nav aria-label="Mais de Italo Junio"><a href="https://www.linkedin.com/in/italo-junio/" target="_blank" rel="noopener noreferrer">LinkedIn</a><span aria-hidden="true">·</span><button type="button" class="btn sm primary" data-pix-open>Apoiar com Pix</button></nav>
+    </footer>
+  </div>
+</section>
+
+<div class="picker" id="picker" role="dialog" aria-labelledby="pkTitle" hidden>
+  <div class="pk-head"><b id="pkTitle">Escolha um ícone</b><button type="button" class="linkbtn" id="pkAuto">Automático</button></div>
+  <input type="text" id="pkSearch" placeholder="Buscar: vendas, mapa, risco…" aria-label="Buscar ícones">
+  <div class="pk-grid" id="pkGrid"></div>
+</div>
+
+<div class="modal" id="hexModal" role="dialog" aria-modal="true" aria-labelledby="hexModalTitle">
+  <div class="hex-card"><h3 id="hexModalTitle">Cor hexadecimal</h3>
+    <input type="text" id="slotHex" aria-label="Código hexadecimal" placeholder="#1F6FC4" maxlength="7" spellcheck="false">
+    <div class="hex-actions"><button type="button" class="btn" id="slotHexCancel">Cancelar</button><button type="button" class="btn primary" id="slotHexApply">Aplicar</button></div>
+  </div>
+</div>
+
+<div class="modal" id="pixModal" role="dialog" aria-modal="true" aria-labelledby="pixTitle">
+  <div class="pix-card">
+    <button type="button" class="pix-close" id="pixClose" aria-label="Fechar">×</button>
+    <h2 id="pixTitle">Apoiar com Pix</h2>
+    <p>Este gerador é gratuito e independente. Se ele economizou seu tempo, considere apoiar via Pix. Obrigado!</p>
+    <img loading="lazy" src="https://i.ibb.co/ymj1gfSx/Whats-App-Image-2026-10-20-at-20-35-24.jpg" alt="QR Code para pagamento via Pix">
+    <div class="pix-name">ITALO JUNIO</div>
+  </div>
+</div>
+
+<div class="tour-hole" id="tourHole" hidden></div>
+<div class="tour-card" id="tourCard" role="dialog" aria-live="polite" hidden></div>
+<dialog class="command-dialog" id="commandDialog" aria-labelledby="commandTitle">
+  <div class="command-head"><label id="commandTitle" for="commandInput">Ir para um ajuste</label><button type="button" class="command-close" id="commandClose" aria-label="Fechar busca">Esc</button></div>
+  <input id="commandInput" type="search" placeholder="Busque páginas, fontes, cores, exportar…" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="commandResults" aria-expanded="true">
+  <div id="commandResults" role="listbox" aria-label="Ajustes encontrados"></div>
+  <p class="command-help">↑ ↓ navegar <span>Enter abrir</span><span>Esc fechar</span></p>
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script type="module" src="./app.js"></script>
+</body>
+</html>
